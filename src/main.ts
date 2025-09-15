@@ -1,1 +1,1 @@
-console.log("Fifteen");
+console.write('Fifteen');
