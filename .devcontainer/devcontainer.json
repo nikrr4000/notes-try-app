@@ -1,0 +1,63 @@
+{
+  "name": "Bun Dev (Podman)",
+  "image": "oven/bun:1",
+  "remoteUser": "bun",
+
+  "updateRemoteUserUID": true,
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "oven.bun-vscode",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "files.eol": "\n",
+        "eslint.format.enable": true,
+        "prettier.singleQuote": true
+      }
+    }
+  },
+
+  "containerEnv": {
+    "NODE_ENV": "development",
+    "FORCE_COLOR": "1"
+  },
+
+  "mounts": [
+    "source=devcontainer-bun,target=/home/bun/.bun,type=volume",
+    "source=devcontainer-cache,target=/home/bun/.cache,type=volume"
+  ],
+
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "forwardPorts": [3000, 5173],
+  "portsAttributes": {
+    "3000": { "label": "App", "onAutoForward": "openBrowser" },
+    "5173": { "label": "Vite/Bun dev", "onAutoForward": "openBrowser" }
+  },
+
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  "postCreateCommand": "/bin/bash -lc '\n\
+    if [ -f bun.lockb ]; then bun install; \n\
+    elif [ -f package.json ]; then bun install; fi \n\
+    git config --global user.name \"nikrr\"\n\
+    git config --global user.email \"romanovnr20@gmail.com\"\n\
+    git config --global init.defaultBranch main\n\
+    echo \"\\n👉 Запусти: gh auth login --hostname github.com --git-protocol https\" \n\
+  '",
+
+  "postStartCommand": "/bin/bash -lc '\n\
+    if [ -f package.json ] && jq -e '.scripts[\"dev\"]' package.json >/dev/null 2>&1; then \n\
+      echo \"Подсказка: запустите \\\"bun dev\\\" (или \\\"bun run dev\\\")\"; \n\
+    fi \n\
+  '",
+
+  "init": true
+}
