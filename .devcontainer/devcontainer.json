@@ -59,5 +59,11 @@
     fi \n\
   '",
 
+  "remote.extensionKind": {
+    "github.vscode-pull-request-github": "ui",
+    "github.vscode-authentication": "ui"
+  },
+  "git.githubAuthentication": true
+
   "init": true
 }
