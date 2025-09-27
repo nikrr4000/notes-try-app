@@ -10,7 +10,7 @@
     "typescript": "^5"
   },
   "scripts": {
-    "dev": "bun run src/index.ts"
+    "dev:bot": "bun --hot src/apps/telegram-bot/src/main.ts"
   },
   "private": true,
   "type": "module",
